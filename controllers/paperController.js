@@ -5,6 +5,7 @@ const sharp = require("sharp");
 const AppError = require("./../utils/appError");
 const catchAsync = require("./../utils/catchAsync");
 const path = require("path");
+const APIFeatures = require("../utils/apiFeatures");
 
 const multerStorage = multer.memoryStorage();
 
@@ -126,3 +127,28 @@ exports.getOnePaper = factory.getOne(Paper);
 exports.getAllPapers = factory.getAll(Paper);
 exports.updatePaper = factory.updateOne(Paper);
 exports.deletePaper = factory.deleteOne(Paper);
+
+exports.papersById = catchAsync(async (req, res, next) => {
+  // let filter = {};
+
+  // const features = new APIFeatures(Paper.find(filter), req.query)
+  //   .filter()
+  //   .sort()
+  //   .limitFields()
+  //   .paginate()
+  //   .select({ _id: 1 });
+
+  const papers = await Paper.find(req.query).select({
+    _id: 1,
+    year: 1,
+    medium: 1,
+  });
+
+  res.status(200).json({
+    status: "success",
+    message: `${papers.length} locations found..`,
+    results: papers.length,
+    // totalCount,
+    papers,
+  });
+});

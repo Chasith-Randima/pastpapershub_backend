@@ -5,6 +5,7 @@ const router = express.Router();
 
 // router.use("/image/:imageName", paperController.getImage);
 // router.use("/search", paperController.searchPhones);
+router.use("/papersById", paperController.papersById);
 router.route("/").get(paperController.getAllPapers).post(
   authController.protect,
   // paperController.uploadPhoneImages,
